@@ -26,3 +26,17 @@
 .Checkbox {
     align-self: flex-start;
 }
+
+.Summary {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 10px;
+    width: 400px;
+    align-items: flex-start;
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+}

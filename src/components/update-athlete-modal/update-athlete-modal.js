@@ -1,3 +1,4 @@
+import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import React from "react";
 import styles from "./update-athlete-modal.module.scss";
 
@@ -50,10 +51,16 @@ class UpdateAthleteModal extends React.Component {
     if (response.ok) this.props.RefreshAthletes();
   };
 
+  toggleEditing = () => {
+    this.setState({
+      isEditing: !this.state.isEditing
+    });
+  }
+
   constructor(props) {
     super(props);
-
     this.state = {
+      isEditing: false,
       _id: props.athlete._id,
       profileIcon: props.athlete.profileIcon,
       fullName: props.athlete.fullName,
@@ -83,7 +90,7 @@ class UpdateAthleteModal extends React.Component {
       </div>
     ));
 
-    return (
+    return this.state.isEditing ? (
       <div className={styles.UpdateAthleteModal}>
         <div className={styles.Modal}>
           <button
@@ -186,6 +193,48 @@ class UpdateAthleteModal extends React.Component {
           >
             {" "}
             <input type="submit" value="Submit" onClick={this.SubmitForm} />
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className={styles.UpdateAthleteModal}>
+        <div className={styles.Modal}>
+          <div className={styles.Summary}>
+            <button
+              style={{ alignSelf: "flex-end" }}
+              onClick={this.props.Unmount}
+            >
+              Close
+            </button>
+            <h2>Profile</h2>
+            {this.state.profileIcon && (
+              <img
+                className="profile-icon"
+                src={this.state.profileIcon}
+                alt="profile icon"
+              ></img>
+            )}
+            <p>Name: {this.state.fullName}</p>
+            <p>Gender: {this.state.gender}</p>
+            <p>Date of Birth: {this.state.dob}</p>
+            <p>Location: {this.state.location}</p>
+            <p>Interests: {this.state.interests}</p>
+            <p>About: {this.state.about}</p>
+            <p>Team: {this.state.team}</p>
+            <p>
+              Sports: {this.state.sports ? this.state.sports.join(", ") : ""}
+            </p>
+            <p>Positions: {this.state.positions}</p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "space-between",
+              }}
+            >
+              <input type="submit" value="Edit" onClick={this.toggleEditing} />
+            </div>
           </div>
         </div>
       </div>
